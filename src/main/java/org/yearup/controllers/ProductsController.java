@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("products")
+@RequestMapping("/products")
 @CrossOrigin
 public class ProductsController
 {
@@ -60,6 +60,16 @@ public class ProductsController
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
+    @GetMapping("/minPrice")
+    public List<Product> searchByPriceRange(@RequestParam("minPrice") BigDecimal minPrice,
+                                            @RequestParam("maxPrice") BigDecimal maxPrice) {
+        if (minPrice.compareTo(BigDecimal.ZERO) < 0 || maxPrice.compareTo(BigDecimal.ZERO) < 0 || minPrice.compareTo(maxPrice) > 0) {
+            throw new IllegalArgumentException("Invalid price range");
+        }
+
+        return productDao.searchByPriceRange(minPrice, maxPrice);
+    }
+
 
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")

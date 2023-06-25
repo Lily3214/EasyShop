@@ -72,7 +72,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
     @Override
-    @Secured("ROLE_ADMIN")
     public Category create(Category category)
     {
         // create a new category
@@ -107,7 +106,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
     @Override
-    @Secured("ROLE_ADMIN")
     public void update(int categoryId, Category category)
     {
         // update category
@@ -127,7 +125,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
     @Override
-    @Secured("ROLE_ADMIN")
     public void delete(int categoryId)
     {
         // delete category

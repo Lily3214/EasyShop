@@ -111,6 +111,29 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         }
         return null;
     }
+    @Override
+    public List<Product> searchByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
+        List<Product> products = new ArrayList<>();
+        String sql = "SELECT * FROM products WHERE price BETWEEN ? AND ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setBigDecimal(1, minPrice);
+            statement.setBigDecimal(2, maxPrice);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Product product = mapRow(resultSet);
+                    products.add(product);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return products;
+    }
 
     @Override
     public Product create(Product product)

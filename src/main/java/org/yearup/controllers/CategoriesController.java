@@ -3,6 +3,7 @@ package org.yearup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.data.CategoryDao;
 import org.yearup.data.ProductDao;
@@ -31,6 +32,7 @@ public class CategoriesController {
 
     // add the appropriate annotation for a get action
     @GetMapping
+    @PreAuthorize("permitAll()")
     public List<Category> getAllCategories() {
         // find and return all categories
         return categoryDao.getAllCategories();
@@ -38,6 +40,7 @@ public class CategoriesController {
 
     // add the appropriate annotation for a get action
     @GetMapping("/{categoryId}")
+    @PreAuthorize("permitAll()")
     public Category getCategoryById(@PathVariable int categoryId) {
         // get the category by id
         return categoryDao.getById(categoryId);
@@ -46,6 +49,7 @@ public class CategoriesController {
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
     @GetMapping("{categoryId}/products")
+    @PreAuthorize("permitAll()")
     public List<Product> getProductsById(@PathVariable int categoryId) {
         // get a list of product by categoryId
         return null;
@@ -56,7 +60,7 @@ public class CategoriesController {
     // add annotation to ensure that only an ADMIN can call this function
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Category addCategory(@RequestBody Category category) {
         // insert the category
         return categoryDao.create(category);
@@ -65,7 +69,7 @@ public class CategoriesController {
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     @PutMapping("/{categoryId}")
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateCategory(@PathVariable int categoryId, @RequestBody Category category) {
         // update the category by id
         categoryDao.update(categoryId, category);
@@ -75,7 +79,7 @@ public class CategoriesController {
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     @DeleteMapping("/{categoryId}")
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable int categoryId) {
         categoryDao.delete(categoryId);
