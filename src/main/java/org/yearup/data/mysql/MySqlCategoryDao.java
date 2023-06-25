@@ -2,6 +2,7 @@ package org.yearup.data.mysql;
 
 import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.yearup.data.CategoryDao;
 import org.yearup.models.Category;
@@ -52,17 +53,15 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     {
         // get category by id
         String sql = "SELECT * FROM categories WHERE category_id = ?";
+
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, categoryId);
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    int categoryID = resultSet.getInt("category_id");
-                    String name = resultSet.getString("name");
-                    String description = resultSet.getString("description");
-                    Category category = new Category(categoryID, name, description);
-                    return category;
+                    return mapRow(resultSet);
                 }
             }
         } catch (SQLException e) {
@@ -73,6 +72,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public Category create(Category category)
     {
         // create a new category
@@ -87,34 +87,61 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException("Creating category failed, no rows affected.");
+                throw new SQLException("Creating categories failed, no rows affected.");
             }
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int generatedId = generatedKeys.getInt(1);
                     category.setCategoryId(generatedId);
+                    return category;
                 } else {
-                    throw new SQLException("Creating category failed, no ID obtained.");
+                    throw new SQLException("Creating categories failed, no ID obtained.");
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return category;
+        return null;
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public void update(int categoryId, Category category)
     {
         // update category
+        String sql = "UPDATE categories SET name = ?, description = ? WHERE category_id = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, category.getName());
+            statement.setString(2, category.getDescription());
+            statement.setInt(3, categoryId);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
+    @Secured("ROLE_ADMIN")
     public void delete(int categoryId)
     {
         // delete category
+        String sql = "DELETE FROM categories WHERE category_id = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, categoryId);
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Category mapRow(ResultSet row) throws SQLException
