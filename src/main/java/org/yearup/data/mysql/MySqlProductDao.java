@@ -1,5 +1,6 @@
 package org.yearup.data.mysql;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.yearup.models.Product;
 import org.yearup.data.ProductDao;
@@ -13,9 +14,12 @@ import java.util.List;
 @Component
 public class MySqlProductDao extends MySqlDaoBase implements ProductDao
 {
+    private DataSource dataSource;
+    @Autowired
     public MySqlProductDao(DataSource dataSource)
     {
         super(dataSource);
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -24,38 +28,29 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         List<Product> products = new ArrayList<>();
 
         String sql = "SELECT * FROM products " +
-                "WHERE (category_id = ? OR ? = -1) " +
-                "   AND (price >= ? OR ? = -1) " +
-                "   AND (price <= ? OR ? = -1) " +
-                "   AND (color = ? OR ? = '') ";
+                "WHERE (category_id = ? OR ? IS NULL) " +
+                "   AND (price >= ? OR ? IS NULL) " +
+                "   AND (price <= ? OR ? IS NULL) " +
+                "   AND (color = ? OR ? IS NULL) ";
 
-        categoryId = categoryId == null ? -1 : categoryId;
-        minPrice = minPrice == null ? new BigDecimal("-1") : minPrice;
-        maxPrice = maxPrice == null ? new BigDecimal("-1") : maxPrice;
-        color = color == null ? "" : color;
-
-        try (Connection connection = getConnection())
-        {
+        try (Connection connection = getConnection()) {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, categoryId);
-            statement.setInt(2, categoryId);
-            statement.setBigDecimal(3, minPrice);
-            statement.setBigDecimal(4, minPrice);
-            statement.setBigDecimal(5, maxPrice);
-            statement.setBigDecimal(6, maxPrice);
-            statement.setString(7, color);
-            statement.setString(8, color);
+            statement.setObject(1, categoryId);
+            statement.setObject(2, categoryId);
+            statement.setObject(3, minPrice);
+            statement.setObject(4, minPrice);
+            statement.setObject(5, maxPrice);
+            statement.setObject(6, maxPrice);
+            statement.setObject(7, color);
+            statement.setObject(8, color);
 
             ResultSet row = statement.executeQuery();
 
-            while (row.next())
-            {
+            while (row.next()) {
                 Product product = mapRow(row);
                 products.add(product);
             }
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
@@ -159,20 +154,10 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
     @Override
     public void update(int productId, Product product)
     {
-        String sql = "UPDATE products" +
-                " SET name = ? " +
-                "   , price = ? " +
-                "   , category_id = ? " +
-                "   , description = ? " +
-                "   , color = ? " +
-                "   , image_url = ? " +
-                "   , stock = ? " +
-                "   , featured = ? " +
-                " WHERE product_id = ?;";
+        String sql = "UPDATE products SET name = ?, price = ?, category_id = ?, description = ?, color = ?, image_url = ?, stock = ?, featured = ? WHERE product_id = ?";
 
-        try (Connection connection = getConnection())
-        {
-            PreparedStatement statement = connection.prepareStatement(sql);
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, product.getName());
             statement.setBigDecimal(2, product.getPrice());
             statement.setInt(3, product.getCategoryId());
@@ -187,7 +172,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         }
         catch (SQLException e)
         {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
