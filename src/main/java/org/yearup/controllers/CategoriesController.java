@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/categories")
 @CrossOrigin
+@PreAuthorize("permitAll()")
 public class CategoriesController {
     private CategoryDao categoryDao;
     private ProductDao productDao;
@@ -32,7 +33,6 @@ public class CategoriesController {
 
     // add the appropriate annotation for a get action
     @GetMapping
-    @PreAuthorize("permitAll()")
     public List<Category> getAllCategories() {
         // find and return all categories
         return categoryDao.getAllCategories();
@@ -40,7 +40,6 @@ public class CategoriesController {
 
     // add the appropriate annotation for a get action
     @GetMapping("/{categoryId}")
-    @PreAuthorize("permitAll()")
     public Category getCategoryById(@PathVariable int categoryId) {
         // get the category by id
         return categoryDao.getById(categoryId);
@@ -49,10 +48,9 @@ public class CategoriesController {
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
     @GetMapping("{categoryId}/products")
-    @PreAuthorize("permitAll()")
     public List<Product> getProductsById(@PathVariable int categoryId) {
         // get a list of product by categoryId
-        return null;
+        return (List<Product>) categoryDao.getById(categoryId);
     }
 
 
