@@ -25,6 +25,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
 
         String sql = "SELECT * FROM products " +
                 "WHERE (category_id = ? OR ? = -1) " +
+                "   AND (price >= ? OR ? = -1) " +
                 "   AND (price <= ? OR ? = -1) " +
                 "   AND (color = ? OR ? = '') ";
 
@@ -40,8 +41,10 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
             statement.setInt(2, categoryId);
             statement.setBigDecimal(3, minPrice);
             statement.setBigDecimal(4, minPrice);
-            statement.setString(5, color);
-            statement.setString(6, color);
+            statement.setBigDecimal(5, maxPrice);
+            statement.setBigDecimal(6, maxPrice);
+            statement.setString(7, color);
+            statement.setString(8, color);
 
             ResultSet row = statement.executeQuery();
 
@@ -110,29 +113,6 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
             throw new RuntimeException(e);
         }
         return null;
-    }
-    @Override
-    public List<Product> searchByPriceRange(BigDecimal minPrice, BigDecimal maxPrice) {
-        List<Product> products = new ArrayList<>();
-        String sql = "SELECT * FROM products WHERE price BETWEEN ? AND ?";
-
-        try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-
-            statement.setBigDecimal(1, minPrice);
-            statement.setBigDecimal(2, maxPrice);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    Product product = mapRow(resultSet);
-                    products.add(product);
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        return products;
     }
 
     @Override
