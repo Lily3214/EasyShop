@@ -28,23 +28,31 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     @Override
     public List<Category> getAllCategories() {
         // get all categories
+        // List<Category> object is used to store the results of the query when it is executed.
         List<Category> categories = new ArrayList<>();
+        // creates an SQL query string that selects all rows from the categories table in a database.
         String sql = "SELECT * FROM categories";
 
+        //try-with-resources statement. It is used to automatically close resources such as database connections that is in the try block
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
+            // iterating over the rows of a ResultSet object using a while loop
             while (resultSet.next()) {
+                // for each row, it retrieves the values of the category_id, name, and description columns using the getInt(), getString(), ResultSet
                 int categoryID = resultSet.getInt("category_id");
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
+                // creates new Category object using these values and adds it to the List<Category> obejct
                 Category category = new Category(categoryID, name, description);
                 categories.add(category);
             }
+            // The catch block catches any SQLException that might occur when executing the SQL query and prints the stack trace of the exception
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        // the method then returns the List<Category> object containing the results of the query
         return categories;
     }
 
