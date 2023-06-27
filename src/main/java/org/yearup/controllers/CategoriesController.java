@@ -116,7 +116,13 @@ public class CategoriesController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable int categoryId) {
-        categoryDao.delete(categoryId);
         // delete the category by id
+        try {
+            categoryDao.delete(categoryId);
+        }
+        catch(Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 }
