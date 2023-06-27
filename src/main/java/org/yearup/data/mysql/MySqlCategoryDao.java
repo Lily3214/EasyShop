@@ -27,12 +27,13 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
     @Override
     public List<Category> getAllCategories() {
+
         // get all categories
         // List<Category> object is used to store the results of the query when it is executed.
         List<Category> categories = new ArrayList<>();
         // creates an SQL query string that selects all rows from the categories table in a database.
         String sql = "SELECT * FROM categories";
-
+// not should add a lot. not good to add for each code. when it's need it only for important code.
         //try-with-resources statement. It is used to automatically close resources such as database connections that is in the try block
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
@@ -44,6 +45,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                 int categoryID = resultSet.getInt("category_id");
                 String name = resultSet.getString("name");
                 String description = resultSet.getString("description");
+                // use the map row all the places I need to use check
                 // creates new Category object using these values and adds it to the List<Category> obejct
                 Category category = new Category(categoryID, name, description);
                 categories.add(category);

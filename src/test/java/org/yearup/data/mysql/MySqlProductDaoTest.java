@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+// couple of unit test in the category
 class MySqlProductDaoTest extends BaseDaoTestClass
 {
     private MySqlProductDao dao;
