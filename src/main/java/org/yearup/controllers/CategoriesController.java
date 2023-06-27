@@ -100,7 +100,13 @@ public class CategoriesController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateCategory(@PathVariable int categoryId, @RequestBody Category category) {
         // update the category by id
-        categoryDao.update(categoryId, category);
+        try {
+            categoryDao.update(categoryId, category);
+        }
+        catch(Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
 
