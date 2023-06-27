@@ -29,8 +29,8 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         // string concatnation
         String sql = "SELECT * FROM products " +
                 "WHERE (category_id = ? OR ? = -1) " +
-                "   AND (price >= ? OR ? IS NULL) " +
-                "   AND (price <= ? OR ? IS NULL) " +
+                "   AND (price >= ? OR ? -1) " +
+                "   AND (price <= ? OR ? -1) " +
                 "   AND (color = ? OR ? = '') ";
 
         categoryId = categoryId == null ? -1 : categoryId;
@@ -54,8 +54,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
 
             while (row.next())
             {
-                Product product = mapRow(row);
-                products.add(product);
+                products.add(mapRow(row));
             }
         }
         catch (SQLException e)
