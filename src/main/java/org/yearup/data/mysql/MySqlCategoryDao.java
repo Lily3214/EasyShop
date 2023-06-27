@@ -29,7 +29,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public List<Category> getAllCategories() {
 
         // get all categories
-        // List<Category> object is used to store the results of the query when it is executed.
         List<Category> categories = new ArrayList<>();
         // creates an SQL query string that selects all rows from the categories table in a database.
         String sql = "SELECT * FROM categories";

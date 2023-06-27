@@ -51,11 +51,15 @@ public class CategoriesController {
     @GetMapping("/{categoryId}")
     public ResponseEntity<Category> getCategoryById(@PathVariable int categoryId) {
         // get the category by id
-        Category category = categoryDao.getById(categoryId);
-        if (category == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(category);
+        try {
+            Category category = categoryDao.getById(categoryId);
+            if (category == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(category);
+        } catch (Exception ex) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+            }
     }
 
     // the url to return all products in category 1 would look like this
@@ -63,7 +67,13 @@ public class CategoriesController {
     @GetMapping("{categoryId}/products")
     public List<Product> getProductsById(@PathVariable int categoryId) {
         // get a list of product by categoryId
-        return (List<Product>) categoryDao.getById(categoryId);
+        try {
+            return (List<Product>) categoryDao.getById(categoryId);
+        }
+        catch(Exception ex)
+        {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
+        }
     }
 
 
