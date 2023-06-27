@@ -29,19 +29,19 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public List<Category> getAllCategories() {
         // get all categories
         List<Category> categories = new ArrayList<>();
-        // creates an SQL query string that selects all rows from the categories table in a database.
+        // SQL query string that selects all rows from the categories table in a database
         String sql = "SELECT * FROM categories";
-        // not should add a lot. not good to add for each code. when it's need it only for important code.
-        //try-with-resources statement. It is used to automatically close resources such as database connections that is in the try block
+        // not should add a lot. not good to add for each code. when it's need it only for important code
+        // Returns a list of categories from the database
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
-            // This is a method that returns a list of categories from a ResultSet object.
+            // This is a method that returns a list of categories from a ResultSet object
             while (resultSet.next()) {
                 Category category = mapRow(resultSet);
                 categories.add(category);
             }
-            // If an SQLException is thrown, it is caught and printed to the console.
+            // If an SQLException is thrown, it is caught and printed to the console
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,8 +52,9 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public Category getById(int categoryId)
     {
         // get category by id
+        // SQL statement that selects all columns from the categories table where the category_id column matches the given category ID
         String sql = "SELECT * FROM categories WHERE category_id = ?";
-
+        // Retrieves a Category object from the database based on the given category ID
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -64,10 +65,11 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                     return mapRow(resultSet);
                 }
             }
+            // If an SQLException is thrown, it is caught and printed to the console.
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        // return null if no Category object was found
         return null;
     }
 
