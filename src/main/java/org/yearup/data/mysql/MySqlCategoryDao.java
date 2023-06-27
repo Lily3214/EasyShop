@@ -77,6 +77,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     public Category create(Category category)
     {
         // create a new category
+        // SQL statement that inserts data into the "categories" table of the database.
         String sql = "INSERT INTO categories (name, description) VALUES (?, ?)";
 
         try (Connection connection = dataSource.getConnection();
@@ -85,12 +86,13 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             statement.setString(1, category.getName());
             statement.setString(2, category.getDescription());
 
+            // checks if any rows affected by the insert operation. if no rows were affected, it throws an exception.
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
                 throw new SQLException("Creating categories failed, no rows affected.");
             }
-
+            // if rows were affected, it retrieves the generated keys using getGeneratedKeys method.
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     int generatedId = generatedKeys.getInt(1);
@@ -100,6 +102,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
                     throw new SQLException("Creating categories failed, no ID obtained.");
                 }
             }
+            // If an SQLException is thrown, it is caught and printed to the console.
         } catch (SQLException e) {
             e.printStackTrace();
         }
