@@ -11,6 +11,7 @@ import org.yearup.data.ProductDao;
 import org.yearup.models.Category;
 import org.yearup.models.Product;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 // add the annotations to make this a REST controller
@@ -28,8 +29,9 @@ public class CategoriesController {
 
     // create an Autowired controller to inject the categoryDao and ProductDao
     @Autowired
-    public CategoriesController(CategoryDao categoryDao) {
+    public CategoriesController(CategoryDao categoryDao, ProductDao productDao, DataSource dataSource) {
         this.categoryDao = categoryDao;
+        this.productDao = productDao;
     }
 
     // add the appropriate annotation for a get action
@@ -72,6 +74,7 @@ public class CategoriesController {
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     @PutMapping("/{categoryId}")
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateCategory(@PathVariable int categoryId, @RequestBody Category category) {
         // update the category by id
