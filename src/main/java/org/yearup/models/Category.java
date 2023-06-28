@@ -6,15 +6,15 @@ public class Category
     private String name;
     private String description;
 
-    public Category()
-    {
-    }
-
     public Category(int categoryId, String name, String description)
     {
         this.categoryId = categoryId;
         this.name = name;
         this.description = description;
+    }
+
+    public Category() {
+
     }
 
     public int getCategoryId()
@@ -46,4 +46,5 @@ public class Category
     {
         this.description = description;
     }
+
 }
