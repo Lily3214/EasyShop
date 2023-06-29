@@ -75,6 +75,7 @@ public class ProductsController
         }
     }
 
+    // Bug Found. change productDao.create => productDao.update
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateProduct(@PathVariable int id, @RequestBody Product product)
