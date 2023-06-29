@@ -47,4 +47,12 @@ public class Category
         this.description = description;
     }
 
+    public void update(int categoryId, Category category) {
+    }
+
+    public void update(Category originalCategory) {
+    }
+
+    public void createCategory(Category newCategory) {
+    }
 }
