@@ -19,6 +19,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         dao = new MySqlCategoryDao(dataSource);
     }
 
+    // test category getbyId. Result should return expected = actual.
     @Test
     public void getById_shouldReturn_theCorrectCategory() {
         // arrange
@@ -38,6 +39,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         assertEquals(expected.getDescription(), actual.getDescription(), "The category description should match.");
     }
 
+    // test category create. Result should return createdCategory.
     @Test
     public void create_shouldReturn_createdCategory() {
         // Arrange
@@ -55,6 +57,8 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         assertEquals(categoryName, createdCategory.getName());
         assertEquals(categoryDescription, createdCategory.getDescription());
     }
+
+    // test get all category list. Result should return expectedCategory = actualCategory
     @Test
     public void getAllCategories_shouldReturn_theCorrectCategoryList() {
         // Arrange
@@ -79,6 +83,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         }
     }
 
+    // test update category list. Result should return to updatedCategory.
     @Test
     public void update_shouldReturn_updatedCategory() {
         // Arrange
