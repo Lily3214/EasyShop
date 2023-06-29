@@ -48,6 +48,8 @@ public class CategoriesController {
 
     // add the appropriate annotation for a get action
     @GetMapping("/{categoryId}")
+    //If the category is not found, then it returns a ResponseEntity object with an HTTP status of 404 (Not Found).
+    // Otherwise, it returns a ResponseEntity object with an HTTP status of 200 (OK) and the category object in its body.
     public ResponseEntity<Category> getCategoryById(@PathVariable int categoryId) {
         // get the category by id
         try {
