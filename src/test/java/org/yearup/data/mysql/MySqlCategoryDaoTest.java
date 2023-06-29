@@ -4,9 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import org.yearup.models.Category;
-import org.yearup.models.Product;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -41,28 +41,36 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
     @Test
     public void Create() {
         // Arrange
+        int categoryId = 1;
         String categoryName = "New Category";
         String categoryDescription = "New Category Description";
 
         Category dao = new Category();
 
         // Act
-        Category newCategory = new Category();
-        newCategory.setName(categoryName);
-        newCategory.setDescription(categoryDescription);
+        Category newCategory = new Category(categoryId, categoryName, categoryDescription);
         dao.createCategory(newCategory);
 
         // Assert
-        assertNotNull(newCategory.getCategoryId());
+        assertEquals(categoryId, newCategory.getCategoryId());
         assertEquals(categoryName, newCategory.getName());
         assertEquals(categoryDescription, newCategory.getDescription());
     }
     @Test
-    public void getAllCategories() {
+    public void testGetAllCategories() {
         // Arrange
+        Category dao = new Category();
+        List<Category> expectedCategories = getExpectedCategories(); // Custom method to create expected categories
+
         // Act
+        List<Category> actualCategories = dao.getAllCategories();
+
         // Assert
+        assertEquals(expectedCategories.size(), actualCategories.size());
+        assertTrue(actualCategories.containsAll(expectedCategories));
+        assertIterableEquals(expectedCategories, actualCategories);
     }
+    
     @Test
     public void Update() {
         // Arrange
@@ -86,4 +94,13 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         assertEquals(newName, updatedCategory.getName());
         assertEquals(newDescription, updatedCategory.getDescription());
     }
+
+    private List<Category> getExpectedCategories() {
+        List<Category> expectedCategories = new ArrayList<>();
+        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
+        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
+        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
+        return expectedCategories;
+    }
+
 }

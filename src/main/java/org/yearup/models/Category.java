@@ -1,10 +1,14 @@
 package org.yearup.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Category
 {
     private int categoryId;
     private String name;
     private String description;
+    private List<Category> allCategories;
 
     public Category(int categoryId, String name, String description)
     {
@@ -54,5 +58,16 @@ public class Category
     }
 
     public void createCategory(Category newCategory) {
+    }
+
+    public List<Category> getAllCategories() {
+        return allCategories;
+    }
+    private List<Category> getExpectedCategories() {
+        List<Category> expectedCategories = new ArrayList<>();
+        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
+        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
+        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
+        return expectedCategories;
     }
 }
