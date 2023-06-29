@@ -22,11 +22,11 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         this.dataSource = dataSource;
     }
 
+    // add maxPrice, price "   AND (price <= ? OR ? = -1) " in search method
     @Override
     public List<Product> search(Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, String color)
     {
         List<Product> products = new ArrayList<>();
-        // string concatnation
         String sql = "SELECT * FROM products " +
                 "WHERE (category_id = ? OR ? = -1) " +
                 "   AND (price >= ? OR ? = -1) " +
