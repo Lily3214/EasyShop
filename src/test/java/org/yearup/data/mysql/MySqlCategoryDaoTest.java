@@ -22,7 +22,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
     // test category getbyId. Result should return expected = actual.
     @Test
     public void getById_shouldReturn_theCorrectCategory() {
-        // arrange
+        // Arrange
         int categoryId = 2;
         Category expected = new Category() {{
             setCategoryId(2);
@@ -30,10 +30,10 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
             setDescription("Discover trendy clothing and accessories for men and women.");
         }};
 
-        // act
+        // Act
         var actual = dao.getById(categoryId);
 
-        // assert
+        // Assert
         assertEquals(expected.getCategoryId(), actual.getCategoryId(), "The category ID should match."); // no need to have message
         assertEquals(expected.getName(), actual.getName(), "The category name should match.");
         assertEquals(expected.getDescription(), actual.getDescription(), "The category description should match.");
