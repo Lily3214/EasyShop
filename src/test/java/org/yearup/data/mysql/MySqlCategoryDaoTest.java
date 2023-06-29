@@ -39,7 +39,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
     }
 
     @Test
-    public void Create() {
+    public void create_shouldReturn_createdCategory() {
         // Arrange
         String categoryName = "New Category";
         String categoryDescription = "New Category Description";
@@ -56,7 +56,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         assertEquals(categoryDescription, createdCategory.getDescription());
     }
     @Test
-    public void testGetAllCategories() {
+    public void getAllCategories_shouldReturn_theCorrectCategoryList() {
         // Arrange
         List<Category> expectedCategories = List.of(
                 new Category(1, "Electronics", "Explore the latest gadgets and electronic devices."),
@@ -80,7 +80,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
     }
 
     @Test
-    public void updateCategory() {
+    public void update_shouldReturn_updatedCategory() {
         // Arrange
         int categoryId = 1;
         String categoryName = "New Category";
@@ -92,11 +92,11 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         updateCategory.setDescription(categoryDescription);
 
         // Act
-        Category createdCategory = dao.create(updateCategory);
+        Category updatedCategory = dao.create(updateCategory);
 
         // Assert
-        assertEquals(categoryId, createdCategory.getCategoryId());
-        assertEquals(categoryName, createdCategory.getName());
-        assertEquals(categoryDescription, createdCategory.getDescription());
+        assertEquals(categoryId, updatedCategory.getCategoryId());
+        assertEquals(categoryName, updatedCategory.getName());
+        assertEquals(categoryDescription, updatedCategory.getDescription());
     }
     }
