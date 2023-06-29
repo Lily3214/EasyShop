@@ -83,6 +83,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         Category originalCategory = dao;
 
         // Act
+        originalCategory.setCategoryId(categoryId);
         originalCategory.setName(newName);
         originalCategory.setDescription(newDescription);
         dao.update(originalCategory);

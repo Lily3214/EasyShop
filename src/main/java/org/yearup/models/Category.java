@@ -66,8 +66,8 @@ public class Category
     private List<Category> getExpectedCategories() {
         List<Category> expectedCategories = new ArrayList<>();
         expectedCategories.add(new Category(1, "Category 1", "Category 1"));
-        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
-        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
+        expectedCategories.add(new Category(2, "Category 1", "Category 1"));
+        expectedCategories.add(new Category(3, "Category 1", "Category 1"));
         return expectedCategories;
     }
 }
