@@ -51,23 +51,4 @@ public class Category
         this.description = description;
     }
 
-    public void update(int categoryId, Category category) {
-    }
-
-    public void update(Category originalCategory) {
-    }
-
-    public void createCategory(Category newCategory) {
-    }
-
-    public List<Category> getAllCategories() {
-        return allCategories;
-    }
-    private List<Category> getExpectedCategories() {
-        List<Category> expectedCategories = new ArrayList<>();
-        expectedCategories.add(new Category(1, "Category 1", "Category 1"));
-        expectedCategories.add(new Category(2, "Category 1", "Category 1"));
-        expectedCategories.add(new Category(3, "Category 1", "Category 1"));
-        return expectedCategories;
-    }
 }
