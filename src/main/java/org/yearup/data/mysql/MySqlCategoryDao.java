@@ -31,7 +31,6 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         List<Category> categories = new ArrayList<>();
         // SQL query string that selects all rows from the categories table in a database
         String sql = "SELECT * FROM categories";
-        // not should add a lot. not good to add for each code. when it's need it only for important code
         // Returns a list of categories from the database
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);

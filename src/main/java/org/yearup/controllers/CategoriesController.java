@@ -97,7 +97,6 @@ public class CategoriesController {
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     @PutMapping("/{categoryId}")
-    // we need to use try catch for all of them in the categoriescontroller.
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void updateCategory(@PathVariable int categoryId, @RequestBody Category category) {
         // update the category by id
