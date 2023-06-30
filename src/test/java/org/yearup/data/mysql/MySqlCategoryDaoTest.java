@@ -51,7 +51,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         newCategory.setName(categoryName);
         newCategory.setDescription(categoryDescription);
 
-        Category createdCategory =  dao.create(newCategory);
+        Category createdCategory = dao.create(newCategory);
 
         // Assert
         assertEquals(categoryName, createdCategory.getName());
@@ -88,21 +88,29 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
     public void update_shouldReturn_updatedCategory() {
         // Arrange
         int categoryId = 1;
-        String categoryName = "New Category";
-        String categoryDescription = "New Category Description";
+        String existingCategoryName = "Electronics";
+        String existingCategoryDescription = "Explore the latest gadgets and electronic devices.";
 
         Category existingCategory = new Category();
         existingCategory.setCategoryId(categoryId);
+        existingCategory.setName(existingCategoryName);
+        existingCategory.setDescription(existingCategoryDescription);
+        dao.create(existingCategory);
+
+        String updatedCategoryName = "Updated Category";
+        String updatedCategoryDescription = "Updated Category Description";
 
         Category updateCategory = new Category();
-        updateCategory.setName(categoryName);
-        updateCategory.setDescription(categoryDescription);
+        updateCategory.setCategoryId(categoryId);
+        updateCategory.setName(updatedCategoryName);
+        updateCategory.setDescription(updatedCategoryDescription);
 
         // Act
-        Category updatedCategory = dao.create(updateCategory);
+        Category updatedCategory = dao.update(updateCategory);
 
         // Assert
-        assertEquals(categoryName, updatedCategory.getName());
-        assertEquals(categoryDescription, updatedCategory.getDescription());
+        assertEquals(categoryId, updatedCategory.getCategoryId());
+        assertEquals(updatedCategoryName, updatedCategory.getName());
+        assertEquals(updatedCategoryDescription, updatedCategory.getDescription());
     }
-    }
+}
