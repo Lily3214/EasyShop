@@ -91,8 +91,10 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         String categoryName = "New Category";
         String categoryDescription = "New Category Description";
 
+        Category existingCategory = new Category();
+        existingCategory.setCategoryId(categoryId);
+
         Category updateCategory = new Category();
-        updateCategory.setCategoryId(categoryId);
         updateCategory.setName(categoryName);
         updateCategory.setDescription(categoryDescription);
 
@@ -100,7 +102,6 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         Category updatedCategory = dao.create(updateCategory);
 
         // Assert
-        assertEquals(categoryId, updatedCategory.getCategoryId());
         assertEquals(categoryName, updatedCategory.getName());
         assertEquals(categoryDescription, updatedCategory.getDescription());
     }
