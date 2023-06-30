@@ -34,7 +34,7 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         var actual = dao.getById(categoryId);
 
         // Assert
-        assertEquals(expected.getCategoryId(), actual.getCategoryId(), "The category ID should match."); // no need to have message
+        assertEquals(expected.getCategoryId(), actual.getCategoryId(), "The category ID should match.");
         assertEquals(expected.getName(), actual.getName(), "The category name should match.");
         assertEquals(expected.getDescription(), actual.getDescription(), "The category description should match.");
     }
@@ -86,7 +86,6 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
     // test update category list. Result should return to updatedCategory.
     @Test
     public void update_shouldReturn_updatedCategory() {
-        /*
         // Arrange
         int categoryId = 1;
         String existingCategoryName = "Electronics";
@@ -107,12 +106,12 @@ class MySqlCategoryDaoTest extends BaseDaoTestClass {
         updateCategory.setDescription(updatedCategoryDescription);
 
         // Act
-        Category updatedCategory = dao.update(updateCategory);
+        dao.update(categoryId, updateCategory);
 
         // Assert
         assertEquals(categoryId, updatedCategory.getCategoryId());
         assertEquals(updatedCategoryName, updatedCategory.getName());
         assertEquals(updatedCategoryDescription, updatedCategory.getDescription());
-        */
+
     }
 }
